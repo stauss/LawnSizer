@@ -1,0 +1,129 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        
+        
+         <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+				 <link type="text/css" rel="stylesheet" href="map.css">
+				
+				 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+				 <script src="jquery-1.11.2.min.js"></script>
+				 <script src="map.js"></script>
+
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+  <body onload="initialize()">
+
+
+        <!-- Add your site or application content here -->
+        
+        <div id="map-canvas" class="map"></div>
+        
+        <div class="full front">
+        	<div class="fullCtr">
+	        <header class="main rdCrn whtShawdow">
+		        <a href="#">
+		        	<h1 class="hideTxt">LawnSizer</h1>
+		        </a>
+						  <div id="locationField" class="searchFrom">
+					      <input id="autocomplete" placeholder="Enter your address" type="text"></input>
+					      <input type="button" value="Locate" onclick="findAddress()"  class="btn green searchBtn hideTxt">
+					    </div>
+						<div class="loginWrap">
+							<div class="loginInfo">
+								<span class="flLeft">Hello, <b>Caleb Stauss</b></span>
+								<a href="#" class="flLeft">Logout</a>
+							</div>
+							<div class="avatar">
+								<img src="images/avatar.png" class="flRight">
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li>
+									<a href="#" class="caps">Home</a>
+								</li>
+								<li>
+									<a href="#" class="caps">About</a>
+								</li>
+								<li>
+									<a href="#" class="caps">My Leads</a>
+								</li>
+							</ul>
+						</nav>
+	        </header>
+        	</div>
+        </div>
+        
+				
+				
+				<div class="full front">
+					<div class="fullCtr padTop50">
+	        <aside class="sideBar rel rdCrn whtShawdow">
+		        <h2>Measurement</h2>
+		        <div class="measurements bg ">
+			        <div id="area"></div>
+		        </div>
+		        <div class="abs btnWrap">
+			        <a href="#" class="btn green">Create a Quote</a>
+		        </div>
+	        </aside>
+					</div>
+				</div>
+
+					<div class="full fix wrapFooter front">
+						<div class="fullCtr">
+			        		<footer class="footerMap rdCrn bgWht whtShawdow">
+
+									<input type="button" value="Make New Polygon" onclick="newPoly()">
+									<input type="button" value="Hide Markers" id="hideMarkers" onclick="hideMarkers()">
+									<input type="button" value="Clear last marker" onclick="clearLastMarker()">
+									<input type="button" value="Clear last polygon" onclick="clearLastPoly()">
+									<input type="button" value="Clear all" onclick="clearAll()">
+									<input type="button" value="Reset Map" onclick="reset()">
+									<form action="">
+											<!--<input type="radio" name="wantRB" id="addBtn" value="true" checked />
+											<label for="addBtn"><span></span></label>
+											
+											<input type="radio" name="wantRB" id="subBtn" value="false" />
+											<label for="subBtn"><span></span></label>-->
+										
+										<input type="radio" name="wantRB" id="addBtn" value="true" checked>I want to add space<br>
+										<input type="radio" name="wantRB" id="subBtn" value="false">I want to subtract space
+									</form>
+
+			        		</footer>
+						</div>
+					</div>
+
+        
+        
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
+</html>
