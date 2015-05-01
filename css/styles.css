@@ -1,0 +1,94 @@
+html, body, #map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.panel-success {
+ opacity: 0.9;
+ margin-top:30px;
+}
+.form-group.last {
+ margin-bottom:0px;
+}
+.trans {
+  opacity: 0.9;
+}
+.no-trans {
+  opacity: 1;
+}
+.barBtns {
+  position: absolute;
+  /*top: 31.5%;*/
+  z-index: 99999;
+  left: 11%;
+  bottom : 2%;
+}
+.green-text, #btns, #hideBtn, #showBtn {
+  color: #5cb85c;
+}
+#hideMeasBtn {
+  color: #3c763d;
+  margin: -7px -17px 0 0;
+}
+.map {
+  position: absolute;
+  z-index: 0;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+#quoteModalBody {
+  margin-top: 21%;
+  width: 30%;
+}
+#quoteFooter {
+  padding: 0px;
+}
+.measurments {
+  position: absolute;
+  width: 20%;
+}
+.lower-panel {
+  margin-top: 20%;
+}
+#addressBar {
+  width: 70%;
+}
+#quoteBtn {
+  width: 100%;
+}
+#locationField, #controls {
+  position: relative;
+  width: 480px;
+}
+#addressCompleter {
+  width: 60%;
+}
+.label {
+  text-align: right;
+  font-weight: bold;
+  width: 100px;
+  color: #303030;
+}
+#address {
+  border: 1px solid #000090;
+  background-color: #f0f0ff;
+  width: 480px;
+  padding-right: 2px;
+}
+#address td {
+  font-size: 10pt;
+}
+.field {
+  width: 99%;
+}
+.slimField {
+  width: 80px;
+}
+.wideField {
+  width: 200px;
+}
+#locationField {
+  height: 20px;
+  margin-bottom: 2px;
+}

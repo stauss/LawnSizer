@@ -1,12 +1,4 @@
 var placeSearch, autocomplete;
-var componentForm = {
-  street_number: 'short_name',
-  route: 'long_name',
-  locality: 'long_name',
-  administrative_area_level_1: 'short_name',
-  country: 'long_name',
-  postal_code: 'short_name'
-};
 var orgPin = {
     url: 'images/orgPin.png',
     size: new google.maps.Size(22, 50),
@@ -25,7 +17,7 @@ var grnPin = {
   origin: new google.maps.Point(0, 0),
   anchor: new google.maps.Point(12, 42)
 };
-var map, geocoder, want, placeSearch, autocomplete, address, houseMarker;
+var map, geocoder, placeSearch, autocomplete, address, houseMarker, makingPoly;
 var paths = [new google.maps.MVCArray];
 var calculators = new google.maps.MVCArray();
 var isFirst = true;
@@ -35,7 +27,7 @@ function initialize() {
   // Create the autocomplete object, restricting the search
   // to geographical location types.
   autocomplete = new google.maps.places.Autocomplete(
-      /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
+      /** @type {HTMLInputElement} */(document.getElementById('addressCompleter')),
       { types: ['geocode'] });
   // When the user selects an address from the dropdown,
   // populate the address fields in the form.
@@ -50,7 +42,7 @@ function initialize() {
 	streetViewControl: false,
     zoomControl: true,
     zoomControlOptions: {
-       position: google.maps.ControlPosition.LEFT_TOP
+       position: google.maps.ControlPosition.RIGHT_CENTER
     },
 	draggableCursor:'crosshair',
 	mapTypeControl: false
@@ -59,25 +51,25 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
   
-  newPoly();
+  newPoly(true);
   
   geocoder = new google.maps.Geocoder();
-  
+  //$("#showBtn").hide();
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
 function findAddress() {
-  debugger;
+  //debugger;
   address = null;
   if (address == null){ 
-	  address = document.getElementById("autocomplete").value;
+	  address = document.getElementById("addressCompleter").value;
   }
 
   geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
-      map.setZoom(21);
+      map.setZoom(20);
 	  map.setTilt(0);
 
 	  if (houseMarker == null){
@@ -93,11 +85,14 @@ function findAddress() {
 
     }
   });
+  //newPoly(true);
+  //document.getElementById('addressSpan').innerHTML = address;
 }
 
-function addPoint(event, path) {
+function addPoint(event, path, want) {
   
   path.insertAt(path.length, event.latLng);
+
   if (calculators.getAt(calculators.getLength() - 1).mvcMarkers.getLength() == 0) {
     var marker = new google.maps.Marker({
       position: event.latLng,
@@ -116,11 +111,11 @@ function addPoint(event, path) {
 	computeArea();
   }
 
-  if (document.getElementById('hideMarkers').value != "Hide Markers") {
+  if (document.getElementById('hideBtn').innerHTML == 'Show Markers') {
   	marker.setVisible(false);
   }
   
-  marker.setTitle("" + path.length);
+  //marker.setTitle("" + path.length);
 
   google.maps.event.addListener(marker, 'dragend', function() {
   	//loop till its the marker that was clicked then set path to coords of new position of this marker
@@ -132,16 +127,20 @@ function addPoint(event, path) {
   calculators.getAt(calculators.getLength() - 1).mvcMarkers.push(marker);
 }
 
-function newPoly(){
+function newPoly(want){
 	if (calculators.getLength() > 0){
 		setUneditable();
     }
 	
+	makingPoly = true;
 	isFirst = true;
-	//this adds listener to marker but adds marker on double click to zoom
+	
 	paths.push(new google.maps.MVCArray);
+	//this adds listener to marker but adds marker on double click to zoom
     google.maps.event.addListener(map, 'click', function (event) {
-  	  addPoint(event, paths[paths.length - 1]);
+      if (makingPoly){
+  	  	addPoint(event, paths[paths.length - 1], want);
+  	  } 
     });
 
 	// this prevents adding marker on double clicking to zoom
@@ -157,15 +156,9 @@ function newPoly(){
 	// google.maps.event.addListener(map, 'dblclick', function(event) {       
 	//     clearTimeout(update_timeout);
 	// });
-
-	if (want == null){
-		want = true;
-	} else {
-		want = document.getElementById('addBtn').checked;
-	}
 	
 	var newPolygon = new google.maps.Polygon();
-	if (want == true) {
+	if (want) {
 		var polyOptions = {
 	          strokeWeight: 3,
 	  	      strokeColor: '#00FF40',
@@ -185,7 +178,9 @@ function newPoly(){
     newPolygon.setPaths(new google.maps.MVCArray([paths[paths.length - 1]]));
 	
     google.maps.event.addListener(newPolygon, 'click', function (event) {
-  	  addPoint(event, paths[paths.length - 1]);
+      if (makingPoly){
+  	    addPoint(event, paths[paths.length - 1], want);
+  	  }
     });
 
 	var calc = {
@@ -215,22 +210,30 @@ function computeArea(){
 	feet = feet.substring(0, feet.indexOf(".") + 3);
 	acres = acres.substring(0, acres.indexOf(".") + 3);
 
-	document.getElementById('area').innerHTML = "Area:</br>" + feet + " Sq. ft</br>" + acres + " acres";
+	//document.getElementById('area').innerHTML = "Area:</br>" + feet + " Sq. ft</br>" + acres + " acres";
+	//debugger;
+	document.getElementById('feetRow').innerHTML = feet + ' Sq. ft</br>';
+	document.getElementById('acreRow').innerHTML = acres + ' acres</br>';
 }
 
 function clearLastMarker(){
-	calculators.getAt(calculators.getLength() - 1).mvcMarkers.getAt(calculators.getAt(calculators.getLength() - 1).mvcMarkers.getLength() - 1).setMap(null);
-	calculators.getAt(calculators.getLength() - 1).mvcMarkers.pop();
-	
-	var path = new google.maps.MVCArray();
 
-	calculators.getAt(calculators.getLength() - 1).mvcMarkers.forEach(function(marker, index) {
-		path.push(marker.getPosition());
-    });
-	
-	paths[paths.length - 1] = path;
-	calculators.getAt(calculators.getLength() - 1).polygon.setPaths(path);
-	computeArea();
+	if (calculators.getAt(calculators.getLength() - 1).mvcMarkers.getLength() == 1){
+		clearAll();
+	} else {
+		calculators.getAt(calculators.getLength() - 1).mvcMarkers.getAt(calculators.getAt(calculators.getLength() - 1).mvcMarkers.getLength() - 1).setMap(null);
+		calculators.getAt(calculators.getLength() - 1).mvcMarkers.pop();
+		
+		var path = new google.maps.MVCArray();
+
+		calculators.getAt(calculators.getLength() - 1).mvcMarkers.forEach(function(marker, index) {
+			path.push(marker.getPosition());
+	    });
+		
+		paths[paths.length - 1] = path;
+		calculators.getAt(calculators.getLength() - 1).polygon.setPaths(path);
+		computeArea();
+    }
 }
 
 function clearLastPoly(){
@@ -250,18 +253,19 @@ function clearLastPoly(){
 	calculators.pop();
 
 	isFirst = true;
+	makingPoly = false;
 	computeArea();
 }
 
 function clearAll(){
 
 	google.maps.event.clearInstanceListeners(calculators.getAt(calculators.getLength() - 1).polygon);
-	calculators.getAt(calculators.getLength() - 1).polygon.setEditable(false);
+	//calculators.getAt(calculators.getLength() - 1).polygon.setEditable(false);
 	calculators.getAt(calculators.getLength() - 1).mvcMarkers.forEach(function(marker, index){
 		google.maps.event.clearInstanceListeners(marker);
 		google.maps.event.clearInstanceListeners(marker);
 	});
-	google.maps.event.clearInstanceListeners(map);
+	google.maps.event.clearListeners(map, 'click');
 
 	calculators.forEach(function(elem, index){
 		clearLastPoly();
@@ -270,8 +274,9 @@ function clearAll(){
 	paths = [new google.maps.MVCArray];
 	calculators = new google.maps.MVCArray();
 	isFirst = true;
-	
-	document.getElementById('area').innerHTML = "Area:</br>" + 0 + " Sq. ft</br>" + 0 + " acres";
+	makingPoly = false;
+	//document.getElementById('area').innerHTML = "Area:</br>0 Sq. ft</br>0 acres";
+	computeArea();
 }
 
 function reset(){
@@ -308,20 +313,19 @@ function clearMarkersInLastPoly(){
 
 function hideMarkers(){
 
-	var markers = calculators.getAt(calculators.getLength() - 1).mvcMarkers;
-	if (document.getElementById('hideMarkers').value == "Hide Markers") {
+	if (document.getElementById('hideBtn').innerHTML == "Hide Markers") {
 		calculators.forEach(function(calc, index){
 			calc.mvcMarkers.forEach(function(marker, index){
 				marker.setVisible(false);
 			});
 		});
-		document.getElementById('hideMarkers').value = "Show Markers";
+		document.getElementById('hideBtn').innerHTML = "Show Markers";
 	} else {
 		calculators.forEach(function(calc, index){
 			calc.mvcMarkers.forEach(function(marker, index){
 				marker.setVisible(true);
 			});
 		});
-		document.getElementById('hideMarkers').value = "Hide Markers";
+		document.getElementById('hideBtn').innerHTML = "Hide Markers";
 	}
 }

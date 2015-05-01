@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place Autocomplete Address Form</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+	<link type="text/css" rel="stylesheet" href="css/styles.css">
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script src="js/index.js"></script>
+	<script src="js/map.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	
+  </head>
+
+  <body onload="initialize()">
+	<nav class="navbar navbar-default navbar-fixed-top"><!-- trans">-->
+      <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">
+	        <font class="green-text">Lawn<strong>sizer</strong></font>
+	      </a>
+	    </div>
+	    <form id="addressBar" class="navbar-form navbar-left" role="search">
+		  <input id="addressCompleter" type="text" class="form-control" placeholder="Enter an address">
+		  <button type="submit" onclick="findAddress()" class="btn btn-link">Locate</button>
+		</form>
+		<a class="btn btn-link navbar-btn navbar-right" href="http://www.lawnsizer.com">Sign Up</a>
+	  </div>
+	</nav>
+	
+	<div id="map-canvas" class="map"></div>
+	<div id="measurments" class="container">
+	    <div class="row">
+	        <div class="col-md-3 lower-panel">
+	            <div class="panel panel-success" id="measure">
+	                <div class="panel-heading"> 
+	                	<strong class="">Measurments</strong>
+	                	<a class="btn btn-link pull-right" id="hideMeasBtn" onclick="hideMeas()">Hide</a>
+	                </div>
+                    <ul class="list-group">
+				      <li id="acreRow" class="list-group-item">0 acres</li>
+				      <li id="feetRow" class="list-group-item">0 Sq. ft</li>
+				    </ul>
+	                <div id="quoteFooter" class="panel-footer">
+	                <button id="quoteBtn" href="#" class="btn btn-success" data-toggle="modal" data-target="#quoteModal">Create Quote</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="container-fluid barBtns">
+	  <div class="btn-group" role="group" aria-label="...">
+	    <a class="btn btn-success" id="addBtn" onclick="newPoly(true)">Add space</a>
+		<a class="btn btn-danger" id="subBtn" onclick="newPoly(false)">Subtract space</a>
+		<a class="btn btn-default" id="hideBtn" onclick="hideMarkers()">Hide Markers</a>
+		<a class="btn btn-default" id="btns" onclick="clearLastMarker()">Remove last marker</a>
+		<a class="btn btn-default" id="btns" onclick="clearLastPoly()">Remove last polygon</a>
+		<a class="btn btn-default" id="btns" onclick="clearAll()">Clear all</a>
+		<a class="btn btn-default" id="btns" onclick="reset()">Reset Map</a>
+		<a class="btn btn-default" id="showBtn" onclick="showMeas()">Show Measurements</a>
+	  </div>
+    </div>
+
+	<!-- Modal -->
+	<div class="modal fade trans" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div id="quoteModalBody" class="modal-dialog modal-md trans">
+	    <div class="modal-content trans">
+	      <div class="modal-header trans">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Coming Soon!</h4>
+	      </div>
+	      <div class="modal-body trans">
+	        <p>
+	        	The Lawnsizer team is currently making the quote builder tool. </br>
+	        	<a href="http://www.lawnsizer.com">Sign up</a> to be notified when we launch the product.
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+  </body>
+</html>
